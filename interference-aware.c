@@ -3,19 +3,28 @@
 //XBT_LOG_DEFAULT_CATEGORY(interference);
 double perceive_interference_matrix[3][3]={{0.94,0.96,0.91},{0.92,0.84,0.85},{0.79,0.77,0.65}};
 
-double get_perceived_interference(host_data_t host_data,char type)
+static double get_perceived_interference(host_data_t host_data,char type)
 {
-  double acc=1.0/interference_matrix[task_type][task_type];
+  double acc=1.0/interference_matrix[type][type];
   int i;
   for (i=0;i<MAXTASKS;i++)
   {
-    if (host_data->tasks[i]!=NULL) acc*=perceive_interference_matrix[task_type][host_data->tasks[i]->type];
+    if (host_data->tasks[i]!=NULL) acc*=perceive_interference_matrix[type][host_data->tasks[i]->type];
   }
   XBT_DEBUG("Interference %f",acc);
   return acc;
 }
 
-static void schedule(task_data_t task_data)
+static int filter_host(host_data_t host_data,task_data_t task_data)
+{
+  if (host_data->avail_ram<task_data->ramsize) return 0;
+  if (host_data->avail_disk<task_data->disksize) return 0;
+  if (host_data->avail_net<task_data->net_cap) return 0;
+  if (host_data->avail_cpus<task_data->ncpus) return 0;
+  return 1;
+}
+
+void schedule(task_data_t task_data)
 {
   int best=0,bestpos=-1;
   unsigned int i;

@@ -53,7 +53,7 @@ void task_line(int i)
     type=dist_rand(40,80,100);
   }
   int net_cap=128*dist_rand(30,50,85,85,100);
-  fprintf(fx, "%d,task%d,%c,%f,%d,%d,%d,%d,%d\n",timer,i,type,computation_amount,cores,ram,disk,net_cap);
+  fprintf(fx, "%d,task%d,%c,%f,%d,%d,%d,%d,%d\n",timer,i,(type+'a'),computation_amount,cores,ram,disk,net_cap);
 }
 
 int main(int argc,char *argv[])

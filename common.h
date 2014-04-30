@@ -2,6 +2,8 @@
 #define _INTERFERENCE_COMMON_H_
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "msg/msg.h"
 #include "xbt/sysdep.h"         
@@ -83,6 +85,7 @@ static double get_pm_interference(host_data_t host_data, char task_type)
 
 static int task_computation()
 {
+  XBT_INFO("task");
   task_data_t task_data = MSG_process_get_data(MSG_process_self());
   msg_task_t task=task_data->task;
   msg_vm_t vm=MSG_process_get_host(MSG_process_self());
@@ -134,7 +137,7 @@ static void launch_task_computation(msg_host_t host,task_data_t task_data)
 
 static void allocate_vm(msg_host_t host,task_data_t task_data)
 {
-  char vm_name[25];
+  char vm_name[25];XBT_INFO("allocate");
   sprintf(vm_name,"vm%d@%s",vmnum,MSG_host_get_name(host));
   vmnum++;
   int i;
@@ -148,7 +151,29 @@ static void allocate_vm(msg_host_t host,task_data_t task_data)
 }
 
 
-static void schedule(task_data_t task);
+void schedule(task_data_t task);
+
+static task_data_t read_task(char *line)
+{
+  const char* tok;
+  const char* str[15];
+  int i=0;XBT_INFO("read");
+  for (tok=strtok(line,",");tok&&*tok;tok=strtok(NULL,",\n"))
+  {
+    str[i]=tok;
+    i++;
+  }
+  XBT_INFO("read");
+  //write function "%d,task%d,%c,%f,%d,%d,%d,%d,%d\n",timer,i,type,computation_amount,cores,ram,disk,net_cap
+  msg_task_t task=MSG_task_create(str[1], atoi(str[3]), 0, NULL);
+  task_data_t task_data=create_task_data(task,str[2][0]-'a');
+  task_data->clock_created=atoi(str[0]);
+  task_data->ncpus=atoi(str[4]);
+  task_data->ramsize=atoi(str[5]);
+  task_data->disksize=atoi(str[6]);
+  task_data->net_cap=atoi(str[7]);XBT_INFO("read");
+  return task_data;
+}
 
 static int master_main(int argc, char *argv[])
 {
@@ -159,8 +184,6 @@ static int master_main(int argc, char *argv[])
 
 
   //open task file and read tasks from there
-  char *taskfile=argv[0];
-
   //test, remove later
   /*msg_task_t task2=MSG_task_create("Task0", 2e10, 0, NULL);
   msg_task_t task3=MSG_task_create("Task1", 2e9, 0, NULL);
@@ -170,10 +193,17 @@ static int master_main(int argc, char *argv[])
   MSG_process_sleep(10);
   schedule(task_data3);
   */
-  while()
+  char *taskfile=argv[0];
+  FILE *fx;
+  task_data_t task_data;
+  fx=fopen(taskfile,"r");
+  char line[1024];
+  while(fgets(line,1024,fx))
   {
-    msg_task_t task=MSG_task_create("Task0", 2e9, 0, NULL);
-    schedule(task_data2);
+    XBT_INFO("read line %s ",line);
+    task_data=read_task(line);
+    MSG_process_sleep(task_data->clock_created-MSG_get_clock());
+    schedule(task_data);
   }
 
   XBT_INFO("scheduling complete");

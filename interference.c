@@ -12,7 +12,7 @@ static int filter_host(host_data_t host_data,task_data_t task_data)
   return 1;
 }
 
-static void schedule(task_data_t task_data)
+void schedule(task_data_t task_data)
 {
   int best=10000,bestpos=-1;
   unsigned int i;
