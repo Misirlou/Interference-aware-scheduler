@@ -43,7 +43,7 @@ static void create_host_data(xbt_dynar_t hosts)
     data->avail_ram=1024*16;
     data->avail_net=1024;
     data->avail_cpus=MSG_host_get_core_number(pm);
-    data->avail_disk=1024*1024;
+    data->avail_disk=1024*1024*4;
     
     MSG_host_set_data(pm,data);
     xbt_dynar_push(hosts_data,&data);
@@ -162,15 +162,15 @@ static int master_main(int argc, char *argv[])
   char *taskfile=argv[0];
 
   //test, remove later
-  msg_task_t task2=MSG_task_create("Task0", 2e10, 0, NULL);
+  /*msg_task_t task2=MSG_task_create("Task0", 2e10, 0, NULL);
   msg_task_t task3=MSG_task_create("Task1", 2e9, 0, NULL);
   task_data_t task_data2 = create_task_data(task2,0);
   task_data_t task_data3 = create_task_data(task3,0);
   schedule(task_data2);
   MSG_process_sleep(10);
   schedule(task_data3);
-
-  while(0==1)
+  */
+  while()
   {
     msg_task_t task=MSG_task_create("Task0", 2e9, 0, NULL);
     schedule(task_data2);

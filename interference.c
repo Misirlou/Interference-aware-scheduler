@@ -16,6 +16,7 @@ static void schedule(task_data_t task_data)
 {
   int best=10000,bestpos=-1;
   unsigned int i;
+  double score;
   msg_host_t host;
   host_data_t host_data;
 
@@ -26,10 +27,11 @@ static void schedule(task_data_t task_data)
     if (filter_host(host_data,task_data))
     {
       //check score
-      if (host_data->ntasks<best)
+      score=host_data->ntasks;
+      if (score<best)
       {
         bestpos=i;
-        best=host_data->ntasks;
+        best=score;
       }
     }
   }
@@ -54,7 +56,7 @@ int main(int argc, char *argv[])
   msg_host_t pm0 = xbt_dynar_get_as(hosts_dynar, 0, msg_host_t);
   create_host_data(hosts_dynar);
 
-  char **argv2 = xbt_new(char *, 2);
+  char **argv2 = xbt_new(char *, 50);
   argv2[0] = xbt_strdup(argv[2]);
   argv2[1] = NULL;
   MSG_process_create_with_arguments("master", master_main, NULL, pm0,1,argv2);
