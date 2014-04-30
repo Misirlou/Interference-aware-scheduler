@@ -27,8 +27,11 @@ int main(int argc, char *argv[])
   msg_host_t pm0 = xbt_dynar_get_as(hosts_dynar, 0, msg_host_t);
   create_host_data(hosts_dynar);
 
-  MSG_process_create("master", master_main, NULL, pm0);
-
+  char **argv2 = xbt_new(char *, 2);
+  argv2[0] = xbt_strdup(argv[2]);
+  argv2[1] = NULL;
+  MSG_process_create_with_arguments("master", master_main, NULL, pm0,1,argv2);
+  
   int res = MSG_main();
   XBT_INFO("Bye (simulation time %g)", MSG_get_clock());
   host_data_t p =xbt_dynar_get_as(hosts_data,1,host_data_t);

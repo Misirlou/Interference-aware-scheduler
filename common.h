@@ -38,7 +38,13 @@ static void create_host_data(xbt_dynar_t hosts)
     {
       data->tasks[j]=NULL;
     }
+    
     pm=xbt_dynar_get_as(hosts, i, msg_host_t);
+    data->avail_ram=1024*16;
+    data->avail_net=1024;
+    data->avail_cpus=MSG_host_get_core_number(pm);
+    data->avail_disk=1024*1024;
+    
     MSG_host_set_data(pm,data);
     xbt_dynar_push(hosts_data,&data);
   }
@@ -89,6 +95,7 @@ static int task_computation()
   task_data->clock_created=MSG_get_clock();
   remaining=MSG_task_get_remaining_computation(task);
   host_data->tasks[task_data->task_number]=task_data;
+  host_data->ntasks++;
 
   XBT_INFO("task has %d core(s), %0.0f flops/s per each, computation %0.0f",cores, flops,remaining);
 
@@ -110,6 +117,7 @@ static int task_computation()
   XBT_DEBUG("Task pointers %p %p %p %p %p",host,MSG_host_get_data(host),vm,task,task_data);
   task_data->clock_end=MSG_get_clock();
   host_data->tasks[task_data->task_number]=NULL;
+  host_data->ntasks--;
   MSG_task_destroy(task);
   task_data->task=NULL;
   MSG_vm_destroy(vm);
@@ -142,7 +150,7 @@ static void allocate_vm(msg_host_t host,task_data_t task_data)
 
 static void schedule(task_data_t task);
 
-static int master_main()
+static int master_main(int argc, char *argv[])
 {
   xbt_dynar_t hosts_dynar = MSG_hosts_as_dynar();
   msg_host_t pm0 = xbt_dynar_get_as(hosts_dynar, 0, msg_host_t);
@@ -151,7 +159,7 @@ static int master_main()
 
 
   //open task file and read tasks from there
-  char *taskfile="asd";//argv[2];
+  char *taskfile=argv[0];
 
   //test, remove later
   msg_task_t task2=MSG_task_create("Task0", 2e10, 0, NULL);

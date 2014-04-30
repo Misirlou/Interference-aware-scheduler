@@ -3,11 +3,39 @@
 //XBT_LOG_DEFAULT_CATEGORY(interference);
 
 
+static int filter_host(host_data_t host_data,task_data_t task_data)
+{
+  if (host_data->avail_ram<task_data->ramsize) return 0;
+  if (host_data->avail_disk<task_data->disksize) return 0;
+  if (host_data->avail_net<task_data->net_cap) return 0;
+  if (host_data->avail_cpus<task_data->ncpus) return 0;
+  return 1;
+}
 
 static void schedule(task_data_t task_data)
 {
-  msg_host_t pm=xbt_dynar_get_as(hosts_dynar, 1, msg_host_t);
-  allocate_vm(pm,task_data);
+  int best=10000,bestpos=-1;
+  unsigned int i;
+  msg_host_t host;
+  host_data_t host_data;
+
+  xbt_dynar_foreach(hosts_dynar,i,host)
+  {
+    host_data=MSG_host_get_data(host);
+    //filter
+    if (filter_host(host_data,task_data))
+    {
+      //check score
+      if (host_data->ntasks<best)
+      {
+        bestpos=i;
+        best=host_data->ntasks;
+      }
+    }
+  }
+
+  host=xbt_dynar_get_as(hosts_dynar, bestpos, msg_host_t);
+  allocate_vm(host,task_data);
 }
 
 
@@ -26,7 +54,10 @@ int main(int argc, char *argv[])
   msg_host_t pm0 = xbt_dynar_get_as(hosts_dynar, 0, msg_host_t);
   create_host_data(hosts_dynar);
 
-  MSG_process_create("master", master_main, NULL, pm0);
+  char **argv2 = xbt_new(char *, 2);
+  argv2[0] = xbt_strdup(argv[2]);
+  argv2[1] = NULL;
+  MSG_process_create_with_arguments("master", master_main, NULL, pm0,1,argv2);
 
   int res = MSG_main();
   

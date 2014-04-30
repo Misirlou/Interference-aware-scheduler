@@ -26,6 +26,10 @@ typedef struct{
 
 typedef struct{
 	int ntasks;
+  int avail_ram;
+  int avail_net;
+  int avail_cpus;
+  int avail_disk;
   task_data_t tasks[MAXTASKS];
 } s_host_data_t, *host_data_t;
 

@@ -5,6 +5,13 @@
 		<host id="PM0" power="1E8" core="4" />
 		<host id="PM1" power="1E8" core="4"/>
 		<host id="PM2" power="1E8" core="4"/>
+		<host id="PM3" power="1E8" core="4"/>
+		<host id="PM4" power="1E8" core="4"/>
+		<host id="PM5" power="1E8" core="4"/>
+		<host id="PM6" power="1E8" core="4"/>
+		<host id="PM7" power="1E8" core="4"/>
+		<host id="PM8" power="1E8" core="4"/>
+		<host id="PM9" power="1E8" core="4"/>
 
 		<!-- <link id="link1" bandwidth="1E6" latency="1E-2" /> -->
 		<link id="link1" bandwidth="12500000" latency="1E-2" />
@@ -17,7 +24,175 @@
 			<link_ctn id="link1"/>
 		</route>
 
+		<route src="PM0" dst="PM3">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM0" dst="PM4">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM0" dst="PM5">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM0" dst="PM6">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM0" dst="PM7">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM0" dst="PM8">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM0" dst="PM9">
+			<link_ctn id="link1"/>
+		</route>
+
 		<route src="PM1" dst="PM2">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM1" dst="PM3">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM1" dst="PM4">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM1" dst="PM5">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM1" dst="PM6">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM1" dst="PM7">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM1" dst="PM8">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM1" dst="PM9">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM2" dst="PM3">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM2" dst="PM4">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM2" dst="PM5">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM2" dst="PM6">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM2" dst="PM7">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM2" dst="PM8">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM2" dst="PM9">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM3" dst="PM4">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM3" dst="PM5">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM3" dst="PM6">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM3" dst="PM7">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM3" dst="PM8">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM3" dst="PM9">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM4" dst="PM5">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM4" dst="PM6">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM4" dst="PM7">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM4" dst="PM8">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM4" dst="PM9">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM5" dst="PM6">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM5" dst="PM7">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM5" dst="PM8">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM5" dst="PM9">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM6" dst="PM7">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM6" dst="PM8">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM6" dst="PM9">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM7" dst="PM8">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM7" dst="PM9">
+			<link_ctn id="link1"/>
+		</route>
+
+		<route src="PM8" dst="PM9">
 			<link_ctn id="link1"/>
 		</route>
 	</AS>
