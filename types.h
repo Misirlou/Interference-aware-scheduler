@@ -4,10 +4,14 @@
 
 #define MAXTASKS 20
 
+#define DP_INTENSITY 100
+#define MIG_SPEED 300
+
+
 typedef struct{
   msg_task_t task;
   int task_number;
-  char type;
+  unsigned char type;
   /* TYPES!
   0->cpu
   1->mem
@@ -33,7 +37,6 @@ typedef struct{
   task_data_t tasks[MAXTASKS];
 } s_host_data_t, *host_data_t;
 
-#define DP_INTENSITY 100
-#define MIG_SPEED 300
+
 
 #endif

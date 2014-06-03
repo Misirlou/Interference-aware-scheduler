@@ -71,7 +71,7 @@ task_data_t create_task_data(msg_task_t task, char type)
   return ret;
 }
 
-static double get_pm_interference(host_data_t host_data, char task_type)
+static double get_pm_interference(host_data_t host_data, unsigned char task_type)
 {
   double acc=1.0/interference_matrix[task_type][task_type];
   int i;
@@ -95,7 +95,7 @@ static int task_computation()
   double flops=MSG_get_host_speed(vm);
   double amount,remaining;
 
-  task_data->clock_created=MSG_get_clock();
+  task_data->clock_start=MSG_get_clock();
   remaining=MSG_task_get_remaining_computation(task);
   host_data->tasks[task_data->task_number]=task_data;
   host_data->ntasks++;
@@ -117,7 +117,7 @@ static int task_computation()
   }
 
   XBT_INFO("Task terminated");
-  XBT_DEBUG("Task pointers %p %p %p %p %p",host,MSG_host_get_data(host),vm,task,task_data);
+  //XBT_DEBUG("Task pointers %p %p %p %p %p",host,MSG_host_get_data(host),vm,task,task_data);
   task_data->clock_end=MSG_get_clock();
   host_data->tasks[task_data->task_number]=NULL;
   host_data->ntasks--;
@@ -137,7 +137,7 @@ static void launch_task_computation(msg_host_t host,task_data_t task_data)
 
 static void allocate_vm(msg_host_t host,task_data_t task_data)
 {
-  char vm_name[25];XBT_INFO("allocate");
+  char vm_name[25];
   sprintf(vm_name,"vm%d@%s",vmnum,MSG_host_get_name(host));
   vmnum++;
   int i;
@@ -157,30 +157,29 @@ static task_data_t read_task(char *line)
 {
   const char* tok;
   const char* str[15];
-  int i=0;XBT_INFO("read");
+  int i=0;
   for (tok=strtok(line,",");tok&&*tok;tok=strtok(NULL,",\n"))
   {
     str[i]=tok;
     i++;
   }
-  XBT_INFO("read");
   //write function "%d,task%d,%c,%f,%d,%d,%d,%d,%d\n",timer,i,type,computation_amount,cores,ram,disk,net_cap
-  msg_task_t task=MSG_task_create(str[1], atoi(str[3]), 0, NULL);
+  msg_task_t task=MSG_task_create(str[1], atof(str[3]), 0, NULL);
   task_data_t task_data=create_task_data(task,str[2][0]-'a');
   task_data->clock_created=atoi(str[0]);
   task_data->ncpus=atoi(str[4]);
   task_data->ramsize=atoi(str[5]);
   task_data->disksize=atoi(str[6]);
-  task_data->net_cap=atoi(str[7]);XBT_INFO("read");
+  task_data->net_cap=atoi(str[7]);
   return task_data;
 }
 
 static int master_main(int argc, char *argv[])
 {
-  xbt_dynar_t hosts_dynar = MSG_hosts_as_dynar();
+  /*xbt_dynar_t hosts_dynar = MSG_hosts_as_dynar();
   msg_host_t pm0 = xbt_dynar_get_as(hosts_dynar, 0, msg_host_t);
   msg_host_t pm1 = xbt_dynar_get_as(hosts_dynar, 1, msg_host_t);
-  msg_host_t pm2 = xbt_dynar_get_as(hosts_dynar, 2, msg_host_t);
+  msg_host_t pm2 = xbt_dynar_get_as(hosts_dynar, 2, msg_host_t);*/
 
 
   //open task file and read tasks from there
@@ -208,6 +207,18 @@ static int master_main(int argc, char *argv[])
 
   XBT_INFO("scheduling complete");
   return 0;
+}
+
+void print_data()
+{
+  unsigned int i;
+  task_data_t task_data;
+
+  xbt_dynar_foreach(tasks_data,i,task_data)
+  {
+    printf("%c %4.2f %4.2f %4.2f\n",task_data->type+'0',task_data->clock_created,task_data->clock_start,task_data->clock_end);
+  }
+  printf("coiso\n");
 }
 
 

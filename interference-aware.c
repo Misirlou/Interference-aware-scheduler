@@ -3,9 +3,9 @@
 //XBT_LOG_DEFAULT_CATEGORY(interference);
 double perceive_interference_matrix[3][3]={{0.94,0.96,0.91},{0.92,0.84,0.85},{0.79,0.77,0.65}};
 
-static double get_perceived_interference(host_data_t host_data,char type)
+static double get_perceived_interference(host_data_t host_data,unsigned char type)
 {
-  double acc=1.0/interference_matrix[type][type];
+  double acc=1.0;///interference_matrix[type][type];
   int i;
   for (i=0;i<MAXTASKS;i++)
   {
@@ -77,11 +77,13 @@ int main(int argc, char *argv[])
 
   int res = MSG_main();
   XBT_INFO("Bye (simulation time %g)", MSG_get_clock());
-  host_data_t p =xbt_dynar_get_as(hosts_data,1,host_data_t);
-  //XBT_DEBUG("memcheck hack %d",p[0]);
+  print_data();
+  //host_data_t p =xbt_dynar_get_as(hosts_data,1,host_data_t);
+  //task_data_t td =xbt_dynar_get_as(tasks_data,1,task_data_t);
+  //XBT_DEBUG("memcheck hack %f",td->clock_created);
+  xbt_dynar_free(&tasks_data);
   xbt_dynar_free(&hosts_dynar);
   xbt_dynar_free(&hosts_data);
-  xbt_dynar_free(&tasks_data);
-  //XBT_DEBUG("memcheck hack %d",p[0]);
+  //XBT_DEBUG("memcheck hack %f",td->clock_created);
   return !(res == MSG_OK);
 }

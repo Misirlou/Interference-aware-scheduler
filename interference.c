@@ -62,13 +62,15 @@ int main(int argc, char *argv[])
   MSG_process_create_with_arguments("master", master_main, NULL, pm0,1,argv2);
 
   int res = MSG_main();
-  
+  XBT_INFO("Bye (simulation time %g)", MSG_get_clock());
+  print_data();
   //host_data_t p =xbt_dynar_get_as(hosts_data,1,host_data_t);
-  //XBT_DEBUG("memcheck hack %d",p[0]);
+  task_data_t td =xbt_dynar_get_as(tasks_data,1,task_data_t);
+  XBT_DEBUG("memcheck hack %f",td->clock_created);
+  xbt_dynar_free(&tasks_data);
   xbt_dynar_free(&hosts_dynar);
   xbt_dynar_free(&hosts_data);
-  xbt_dynar_free(&tasks_data);
-  //XBT_DEBUG("memcheck hack %d",p[0]);
-  XBT_INFO("Bye (simulation time %g)", MSG_get_clock());
+  XBT_DEBUG("memcheck hack %f",td->clock_created);
+  
   return !(res == MSG_OK);
 }
