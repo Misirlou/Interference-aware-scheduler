@@ -14,9 +14,10 @@ static int filter_host(host_data_t host_data,task_data_t task_data)
 
 void schedule(task_data_t task_data)
 {
-  int best=10000,bestpos=-1;
+  int bestpos=-1;
   unsigned int i;
   double score;
+  double best=10000;
   msg_host_t host;
   host_data_t host_data;
 
@@ -27,7 +28,8 @@ void schedule(task_data_t task_data)
     if (filter_host(host_data,task_data))
     {
       //check score
-      score=host_data->ntasks;
+      score=host_data->ntasks*1000000000.0/MSG_get_host_speed(host);
+      //XBT_INFO("score %f %f",score,MSG_get_host_speed(host));
       if (score<best)
       {
         bestpos=i;
@@ -48,7 +50,7 @@ int main(int argc, char *argv[])
   MSG_init(&argc, argv);
 
   /* load the platform file */
-  xbt_assert(argc == 3);
+  xbt_assert(argc == 4);
   MSG_create_environment(argv[1]);
 
   hosts_dynar = MSG_hosts_as_dynar();
@@ -62,8 +64,9 @@ int main(int argc, char *argv[])
   MSG_process_create_with_arguments("master", master_main, NULL, pm0,1,argv2);
 
   int res = MSG_main();
+  print_data("normal",argv[1],argv[2],argv[3]);
+
   XBT_INFO("Bye (simulation time %g)", MSG_get_clock());
-  print_data();
   //host_data_t p =xbt_dynar_get_as(hosts_data,1,host_data_t);
   task_data_t td =xbt_dynar_get_as(tasks_data,1,task_data_t);
   XBT_DEBUG("memcheck hack %f",td->clock_created);

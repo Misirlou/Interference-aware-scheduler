@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <locale.h>
 
 #include "msg/msg.h"
 #include "xbt/sysdep.h"         
@@ -85,7 +86,7 @@ static double get_pm_interference(host_data_t host_data, unsigned char task_type
 
 static int task_computation()
 {
-  XBT_INFO("task");
+  //XBT_INFO("task");
   task_data_t task_data = MSG_process_get_data(MSG_process_self());
   msg_task_t task=task_data->task;
   msg_vm_t vm=MSG_process_get_host(MSG_process_self());
@@ -94,13 +95,13 @@ static int task_computation()
   int cores=MSG_host_get_core_number(vm);
   double flops=MSG_get_host_speed(vm);
   double amount,remaining;
-
+  task_data->hostname=MSG_host_get_name(host);
   task_data->clock_start=MSG_get_clock();
   remaining=MSG_task_get_remaining_computation(task);
   host_data->tasks[task_data->task_number]=task_data;
   host_data->ntasks++;
 
-  XBT_INFO("task has %d core(s), %0.0f flops/s per each, computation %0.0f",cores, flops,remaining);
+  XBT_DEBUG("task has %d core(s), %0.0f flops/s per each, computation %0.0f",cores, flops,remaining);
 
   while (remaining>0)
   {
@@ -116,7 +117,7 @@ static int task_computation()
 
   }
 
-  XBT_INFO("Task terminated");
+  XBT_DEBUG("Task terminated");
   //XBT_DEBUG("Task pointers %p %p %p %p %p",host,MSG_host_get_data(host),vm,task,task_data);
   task_data->clock_end=MSG_get_clock();
   host_data->tasks[task_data->task_number]=NULL;
@@ -199,7 +200,7 @@ static int master_main(int argc, char *argv[])
   char line[1024];
   while(fgets(line,1024,fx))
   {
-    XBT_INFO("read line %s ",line);
+    XBT_DEBUG("read line %s ",line);
     task_data=read_task(line);
     MSG_process_sleep(task_data->clock_created-MSG_get_clock());
     schedule(task_data);
@@ -209,16 +210,22 @@ static int master_main(int argc, char *argv[])
   return 0;
 }
 
-void print_data()
+void print_data(char* type,char *hostfile,char *taskfile,char *printfile)
 {
   unsigned int i;
+  FILE *fx;
+  setlocale(LC_NUMERIC, "French_Canada.1252");
+  fx=fopen(printfile,"w+");
   task_data_t task_data;
 
+  fprintf(fx,"%s\t%s\t%s\n\n",type,hostfile,taskfile);
   xbt_dynar_foreach(tasks_data,i,task_data)
   {
-    printf("%c %4.2f %4.2f %4.2f\n",task_data->type+'0',task_data->clock_created,task_data->clock_start,task_data->clock_end);
+    fprintf(fx,"%c\t%5.0f\t%5.0f\t%5.0f\t%s\t%d\t%d\t%d\n",task_data->type+'0',task_data->clock_created,task_data->clock_start,task_data->clock_end,task_data->hostname,task_data->ncpus,task_data->disksize,task_data->ramsize);
   }
-  printf("coiso\n");
+  fprintf(fx, "\n" );
+  fclose(fx);
+  //printf("coiso\n");
 }
 
 

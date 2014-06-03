@@ -26,6 +26,7 @@ typedef struct{
   int net_cap;
   char disk_path[5];
   int disksize;
+  const char *hostname;
 } s_task_data_t, *task_data_t;
 
 typedef struct{
