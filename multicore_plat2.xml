@@ -4,14 +4,14 @@
 	<AS id="siteA" routing="Full">
 		<host id="PM0" power="1E8" core="4" />
 		<host id="PM1" power="1E8" core="4"/>
-		<host id="PM2" power="1E7" core="4"/>
-		<host id="PM3" power="1E7" core="4"/>
+		<host id="PM2" power="5E7" core="4"/>
+		<host id="PM3" power="5E7" core="4"/>
 		<host id="PM4" power="1E8" core="4"/>
 		<host id="PM5" power="1E8" core="4"/>
-		<host id="PM6" power="1E7" core="4"/>
-		<host id="PM7" power="1E7" core="4"/>
-		<host id="PM8" power="1E7" core="4"/>
-		<host id="PM9" power="1E7" core="4"/>
+		<host id="PM6" power="8E7" core="4"/>
+		<host id="PM7" power="8E7" core="4"/>
+		<host id="PM8" power="8E7" core="4"/>
+		<host id="PM9" power="8E7" core="4"/>
 
 		<!-- <link id="link1" bandwidth="1E6" latency="1E-2" /> -->
 		<link id="link1" bandwidth="12500000" latency="1E-2" />

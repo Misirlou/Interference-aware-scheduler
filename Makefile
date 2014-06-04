@@ -26,6 +26,6 @@ LIBS =
 	$(CC) $(INCLUDES) $(DEFS) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm -f $(BIN_FILES) *.o *~ core
+	rm -f $(BIN_FILES) *.o *\~ core
 .SUFFIXES:
 .PHONY: clean

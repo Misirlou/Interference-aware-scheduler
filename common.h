@@ -214,11 +214,11 @@ void print_data(char* type,char *hostfile,char *taskfile,char *printfile)
 {
   unsigned int i;
   FILE *fx;
-  setlocale(LC_NUMERIC, "French_Canada.1252");
+  //setlocale(LC_NUMERIC, "French_Canada.1252");
   fx=fopen(printfile,"w+");
   task_data_t task_data;
 
-  fprintf(fx,"%s\t%s\t%s\n\n",type,hostfile,taskfile);
+  fprintf(fx,"%s\t%s\t%s\n\n\n",type,hostfile,taskfile);
   xbt_dynar_foreach(tasks_data,i,task_data)
   {
     fprintf(fx,"%c\t%5.0f\t%5.0f\t%5.0f\t%s\t%d\t%d\t%d\n",task_data->type+'0',task_data->clock_created,task_data->clock_start,task_data->clock_end,task_data->hostname,task_data->ncpus,task_data->disksize,task_data->ramsize);
