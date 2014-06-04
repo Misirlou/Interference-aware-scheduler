@@ -28,7 +28,7 @@ void schedule(task_data_t task_data)
     if (filter_host(host_data,task_data))
     {
       //check score
-      score=host_data->ntasks*1000000000.0/MSG_get_host_speed(host);
+      score=(host_data->ntasks+0.01)*1000000000.0/MSG_get_host_speed(host);
       //XBT_INFO("score %f %f",score,MSG_get_host_speed(host));
       if (score<best)
       {

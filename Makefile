@@ -1,4 +1,4 @@
-all: interference interference-aware
+all: interference interference-aware clean
 interference: interference.o
 interference-aware: interference-aware.o
 
@@ -26,6 +26,6 @@ LIBS =
 	$(CC) $(INCLUDES) $(DEFS) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm -f $(BIN_FILES) *.o *~
+	rm -f $(BIN_FILES) *.o *~ core
 .SUFFIXES:
 .PHONY: clean
