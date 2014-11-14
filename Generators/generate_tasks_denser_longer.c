@@ -43,7 +43,7 @@ int disk_rand()
 void task_line(int i)
 {
   timer+=dist_rand(40,60,80,100)*(rand()%2+1);
-  double computation_amount=2*1E9*(dist_rand(0,5,10,20,35,50,65,80,90,95,100));
+  double computation_amount=1*1E10*(dist_rand(0,10,20,35,50,65,80,100));
   int cores=dist_rand(0,75,95,95,100);
   int ram=512*dist_rand(0,50,80,80,100);
   int disk=disk_rand();

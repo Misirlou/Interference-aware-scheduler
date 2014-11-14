@@ -177,22 +177,7 @@ static task_data_t read_task(char *line)
 
 static int master_main(int argc, char *argv[])
 {
-  /*xbt_dynar_t hosts_dynar = MSG_hosts_as_dynar();
-  msg_host_t pm0 = xbt_dynar_get_as(hosts_dynar, 0, msg_host_t);
-  msg_host_t pm1 = xbt_dynar_get_as(hosts_dynar, 1, msg_host_t);
-  msg_host_t pm2 = xbt_dynar_get_as(hosts_dynar, 2, msg_host_t);*/
-
-
-  //open task file and read tasks from there
-  //test, remove later
-  /*msg_task_t task2=MSG_task_create("Task0", 2e10, 0, NULL);
-  msg_task_t task3=MSG_task_create("Task1", 2e9, 0, NULL);
-  task_data_t task_data2 = create_task_data(task2,0);
-  task_data_t task_data3 = create_task_data(task3,0);
-  schedule(task_data2);
-  MSG_process_sleep(10);
-  schedule(task_data3);
-  */
+  
   char *taskfile=argv[0];
   FILE *fx;
   task_data_t task_data;
